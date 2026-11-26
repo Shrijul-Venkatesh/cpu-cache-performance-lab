@@ -178,7 +178,10 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not data_path.exists():
-        parser.error(f"data file not found: {data_path}; run experiments/02_memory_layouts.py first")
+        parser.error(
+            f"data file not found: {data_path}; "
+            "run experiments/memory_layouts/experiment.py first"
+        )
 
     df = pd.read_csv(data_path)
     print(f"Loaded {len(df)} rows from {data_path}")

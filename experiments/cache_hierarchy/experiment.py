@@ -1,11 +1,16 @@
+"""Run the cache hierarchy experiment."""
+
 import argparse
 import platform
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import numba
 import numpy as np
 
-from .._benchmarking import (
+from experiments._benchmarking import (
     detect_cache_sizes,
     make_flush_buffer,
     print_cache_info,
@@ -13,8 +18,8 @@ from .._benchmarking import (
     save_metadata,
     system_metadata,
 )
-from .benchmark import FIELDNAMES, run_experiment
-from .kernels import warmup_kernels
+from experiments.cache_hierarchy.benchmark import FIELDNAMES, run_experiment
+from experiments.cache_hierarchy.kernels import warmup_kernels
 
 
 def _print_system_info(cache):
@@ -35,7 +40,7 @@ def _print_system_info(cache):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Cache hierarchy benchmark")
+    parser = argparse.ArgumentParser(description="Cache hierarchy experiment")
     parser.add_argument("--repeat", type=int, default=10)
     parser.add_argument("--array-mb", type=int, default=64)
     parser.add_argument("--max-size-mb", type=int, default=256)

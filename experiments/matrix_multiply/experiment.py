@@ -1,21 +1,27 @@
+"""Run the matrix multiplication experiment."""
+
 import argparse
 import platform
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import numpy as np
 import threadpoolctl
 
-from .._benchmarking import (
+from experiments._benchmarking import (
     detect_cache_sizes,
     print_cache_info,
     save_csv,
     save_metadata,
     system_metadata,
 )
-from .benchmark import FIELDNAMES, run_sweep
+from experiments.matrix_multiply.benchmark import FIELDNAMES, run_sweep
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Matrix multiplication benchmark")
+    parser = argparse.ArgumentParser(description="Matrix multiplication experiment")
     parser.add_argument("--repeat", type=int, default=10)
     parser.add_argument("--perf-repeat", type=int, default=10)
     parser.add_argument("--max-side", type=int, default=4096)

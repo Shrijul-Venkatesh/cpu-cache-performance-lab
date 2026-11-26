@@ -20,10 +20,9 @@ On Windows, activate the environment with `.venv\Scripts\activate`.
 
 ## Project layout
 
-- `experiments/01_*.py`, `02_*.py`, and `03_*.py` are the documented entry
-  points.
 - `experiments/cache_hierarchy/`, `memory_layouts/`, and `matrix_multiply/`
-  hold each experiment's kernels, benchmark logic, CLI, and optional perf code.
+  each contain an `experiment.py` entry point and that experiment's benchmark
+  logic; matrix multiplication also has optional perf-counter support.
 - `experiments/_benchmarking/` contains shared timing, system, metadata, and CSV
   helpers.
 - `plots/` has one plot script per experiment plus `generator.py` to regenerate
@@ -42,17 +41,17 @@ datasets. They write CSV measurements and JSON metadata under `data/`, then
 generate plots under `plots/figures/`.
 
 ```bash
-python experiments/01_cache_hierarchy.py \
+python experiments/cache_hierarchy/experiment.py \
   --subexp both --max-size-mb 1 --repeat 3 --output data/01_cache_hierarchy.csv
 python plots/01_cache_hierarchy_plot.py \
   --data data/01_cache_hierarchy.csv --out-dir plots/figures
 
-python experiments/02_memory_layouts.py \
+python experiments/memory_layouts/experiment.py \
   --max-side 128 --repeat 3 --output data/02_memory_layouts.csv
 python plots/02_memory_layouts_plot.py \
   --data data/02_memory_layouts.csv --out-dir plots/figures
 
-python experiments/03_matrix_multiply.py \
+python experiments/matrix_multiply/experiment.py \
   --max-side 128 --max-threads 2 --repeat 3 --no-perf \
   --output data/03_matrix_multiply.csv
 python plots/03_matrix_multiply_plot.py \

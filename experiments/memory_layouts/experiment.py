@@ -1,9 +1,15 @@
+"""Run the NumPy memory-layout experiment."""
+
 import argparse
 import platform
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import numpy as np
 
-from .._benchmarking import (
+from experiments._benchmarking import (
     detect_cache_sizes,
     make_flush_buffer,
     print_cache_info,
@@ -11,11 +17,11 @@ from .._benchmarking import (
     save_metadata,
     system_metadata,
 )
-from .benchmark import FIELDNAMES, run_sweep
+from experiments.memory_layouts.benchmark import FIELDNAMES, run_sweep
 
 
 def main():
-    parser = argparse.ArgumentParser(description="NumPy memory-layout benchmark")
+    parser = argparse.ArgumentParser(description="NumPy memory-layout experiment")
     parser.add_argument("--repeat", type=int, default=10)
     parser.add_argument("--max-side", type=int, default=4096)
     parser.add_argument("--seed", type=int, default=12345)

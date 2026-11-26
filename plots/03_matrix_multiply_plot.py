@@ -181,7 +181,10 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     if not data_path.exists():
-        parser.error(f"data file not found: {data_path}; run experiments/03_matrix_multiply.py first")
+        parser.error(
+            f"data file not found: {data_path}; "
+            "run experiments/matrix_multiply/experiment.py first"
+        )
 
     df = pd.read_csv(data_path)
     print(f"Loaded {len(df)} rows from {data_path}")
