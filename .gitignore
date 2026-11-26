@@ -1,0 +1,12 @@
+.venv/
+/venv/
+/env/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.nbc
+*.nbi
+.DS_Store
+Thumbs.db
+
+# Benchmark CSVs, metadata, and figures are publishable project outputs.
