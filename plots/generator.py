@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+EXPERIMENT_01_DIR = PROJECT_ROOT / "artifacts" / "experiment-01"
 PLOT_SCRIPTS = (
     ("01_cache_hierarchy_plot.py", "01_cache_hierarchy.csv"),
     ("02_memory_layouts_plot.py", "02_memory_layouts.csv"),
@@ -30,7 +31,12 @@ def main() -> None:
     data_dir = project_path(args.data_dir)
     out_dir = project_path(args.out_dir)
     for script, csv_name in PLOT_SCRIPTS:
-        csv_path = data_dir / csv_name
+        if script == "01_cache_hierarchy_plot.py":
+            csv_path = EXPERIMENT_01_DIR / csv_name
+            plot_out_dir = EXPERIMENT_01_DIR
+        else:
+            csv_path = data_dir / csv_name
+            plot_out_dir = out_dir
         if not csv_path.exists():
             parser.error(f"data file not found: {csv_path}")
         subprocess.run(
@@ -40,7 +46,7 @@ def main() -> None:
                 "--data",
                 str(csv_path),
                 "--out-dir",
-                str(out_dir),
+                str(plot_out_dir),
             ],
             check=True,
         )

@@ -37,14 +37,17 @@ without them. Use `--no-perf` to skip counters.
 ## Quick smoke run
 
 These commands exercise every experiment without allocating the largest
-datasets. They write CSV measurements and JSON metadata under `data/`, then
-generate plots under `plots/figures/`.
+datasets. Experiment 1 writes its CSV, metadata, and plots under
+`artifacts/experiment-01/`. The other experiments write CSV measurements and
+metadata under `data/`, then generate plots under `plots/figures/`.
 
 ```bash
 python experiments/cache_hierarchy/experiment.py \
-  --subexp both --max-size-mb 1 --repeat 3 --output data/01_cache_hierarchy.csv
+  --subexp both --max-size-mb 1 --repeat 3 \
+  --output artifacts/experiment-01/01_cache_hierarchy.csv
 python plots/01_cache_hierarchy_plot.py \
-  --data data/01_cache_hierarchy.csv --out-dir plots/figures
+  --data artifacts/experiment-01/01_cache_hierarchy.csv \
+  --out-dir artifacts/experiment-01
 
 python experiments/memory_layouts/experiment.py \
   --max-side 128 --repeat 3 --output data/02_memory_layouts.csv
@@ -78,9 +81,7 @@ CPU/OS/Python/NumPy details, and command-line arguments.
 
 1. **Cache hierarchy** compares sequential reads, fixed strides, random gathers,
    and dependent pointer chasing over increasing array sizes. The working-set
-   column includes the index array for gather and pointer-chase cases. A cache
-   eviction buffer is touched before timed samples, but this is a best-effort
-   eviction attempt—not a guarantee that every measurement starts cold.
+   column includes the index array for gather and pointer-chase cases.
    `latency_per_element_ns` is an amortized cost for sequential and gather
    patterns; pointer chasing is the latency-oriented measurement, though its
    dependent index and data loads mean it is not a single-load latency.

@@ -1,10 +1,10 @@
 """
 Plot results from experiment 01: Cache Hierarchy.
 
-Reads:  data/01_cache_hierarchy.csv
-Writes: figures/01a_stride_sweep.png
-        figures/01b_size_sweep_latency.png
-        figures/01b_size_sweep_throughput.png
+Reads:  artifacts/experiment-01/01_cache_hierarchy.csv
+Writes: artifacts/experiment-01/01a_stride_sweep.png
+        artifacts/experiment-01/01b_size_sweep_latency.png
+        artifacts/experiment-01/01b_size_sweep_throughput.png
 
 Usage: python plots/01_cache_hierarchy_plot.py [--data PATH] [--out-dir DIR]
 """
@@ -150,8 +150,16 @@ def plot_size_sweep(df_b, out_dir, cache_lines):
 
 def main():
     parser = argparse.ArgumentParser(description="Plot experiment 01 results")
-    parser.add_argument("--data", type=str, default="data/01_cache_hierarchy.csv")
-    parser.add_argument("--out-dir", type=str, default="figures")
+    parser.add_argument(
+        "--data",
+        type=str,
+        default="artifacts/experiment-01/01_cache_hierarchy.csv",
+    )
+    parser.add_argument(
+        "--out-dir",
+        type=str,
+        default="artifacts/experiment-01",
+    )
     args = parser.parse_args()
 
     data_path = Path(args.data)

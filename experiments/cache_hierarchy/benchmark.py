@@ -49,7 +49,7 @@ def _row(
     }
 
 
-def run_stride_sweep(array_size_mb, repeat, rng, cache, flush_buffer):
+def run_stride_sweep(array_size_mb, repeat, rng, cache):
     size_bytes = array_size_mb * 1024 * 1024
     array = rng.random(size_bytes // 8)
     if array.nbytes <= cache["L3"]:
@@ -61,7 +61,6 @@ def run_stride_sweep(array_size_mb, repeat, rng, cache, flush_buffer):
         timing = benchmark(
             lambda s=stride: kernel_strided(array, s),
             repeat=repeat,
-            before_each=lambda: kernel_sequential(flush_buffer),
         )
         rows.append(_row(
             "A", "strided", array.nbytes, stride, accessed, timing,
@@ -75,7 +74,7 @@ def run_stride_sweep(array_size_mb, repeat, rng, cache, flush_buffer):
     return rows
 
 
-def run_size_sweep(repeat, max_size_mb, rng, cache, flush_buffer):
+def run_size_sweep(repeat, max_size_mb, rng, cache):
     sizes = [
         2**power for power in range(12, 29)
         if 2**power <= max_size_mb * 1024 * 1024
@@ -111,7 +110,6 @@ def run_size_sweep(repeat, max_size_mb, rng, cache, flush_buffer):
             timing = benchmark(
                 fn,
                 repeat=repeat,
-                before_each=lambda: kernel_sequential(flush_buffer),
             )
             rows.append(_row(
                 "B",
@@ -132,17 +130,17 @@ def run_size_sweep(repeat, max_size_mb, rng, cache, flush_buffer):
 
 
 def run_experiment(
-    subexp, array_size_mb, max_size_mb, repeat, rng, cache, flush_buffer
+    subexp, array_size_mb, max_size_mb, repeat, rng, cache
 ):
     rows = []
     if subexp in ("A", "both"):
         print(f"=== Stride sweep ({array_size_mb}MB array) ===")
         rows.extend(run_stride_sweep(
-            array_size_mb, repeat, rng, cache, flush_buffer
+            array_size_mb, repeat, rng, cache
         ))
     if subexp in ("B", "both"):
         print("\n=== Dataset-size sweep ===")
         rows.extend(run_size_sweep(
-            repeat, max_size_mb, rng, cache, flush_buffer
+            repeat, max_size_mb, rng, cache
         ))
     return rows

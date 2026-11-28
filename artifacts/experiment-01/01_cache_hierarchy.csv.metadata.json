@@ -1,6 +1,6 @@
 {
-  "experiment": "02_memory_layouts",
-  "recorded_at_utc": "2026-11-26T21:02:24.949483+00:00",
+  "experiment": "01_cache_hierarchy",
+  "recorded_at_utc": "2026-11-28T14:55:40.564350+00:00",
   "seed": 12345,
   "cpu_model": "12th Gen Intel(R) Core(TM) i7-12650H",
   "logical_cpu_count": 16,
@@ -29,9 +29,11 @@
     "L3": 25165824
   },
   "arguments": {
-    "repeat": 5,
-    "max_side": 2048,
+    "repeat": 10,
+    "array_mb": 64,
+    "max_size_mb": 256,
     "seed": 12345,
-    "output": "data/02_memory_layouts.csv"
+    "output": "artifacts/experiment-01/01_cache_hierarchy.csv",
+    "subexp": "both"
   }
 }

@@ -12,7 +12,6 @@ import numpy as np
 
 from experiments._benchmarking import (
     detect_cache_sizes,
-    make_flush_buffer,
     print_cache_info,
     save_csv,
     save_metadata,
@@ -45,7 +44,10 @@ def main():
     parser.add_argument("--array-mb", type=int, default=64)
     parser.add_argument("--max-size-mb", type=int, default=256)
     parser.add_argument("--seed", type=int, default=12345)
-    parser.add_argument("--output", default="data/01_cache_hierarchy.csv")
+    parser.add_argument(
+        "--output",
+        default="artifacts/experiment-01/01_cache_hierarchy.csv",
+    )
     parser.add_argument("--subexp", choices=("A", "B", "both"), default="both")
     args = parser.parse_args()
     if min(args.repeat, args.array_mb, args.max_size_mb) < 1:
@@ -61,7 +63,6 @@ def main():
         args.repeat,
         np.random.default_rng(args.seed),
         cache,
-        make_flush_buffer(cache),
     )
     save_csv(rows, FIELDNAMES, args.output)
     save_metadata(args.output, system_metadata(
